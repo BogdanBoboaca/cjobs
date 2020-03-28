@@ -10,6 +10,7 @@ public interface JobRepository extends JpaRepository<Job, Long> {
 
     Page<Job> findByNameContaining(String partialName, Pageable pageable);
 
-    @Query(value = "SELECT * FROM job WHERE `name` LIKE '%?%'", nativeQuery = true)
+    @Query(value = "SELECT * FROM job WHERE `name` LIKE '%?0%'", nativeQuery = true)
+   //@Query("SELECT job FROM Job job WHERE `name` LIKE '%:partialName%'")
     Page<Job> findByPartialName(String partialName, Pageable pageable);
 }
