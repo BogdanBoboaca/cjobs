@@ -61,7 +61,32 @@ public class JobServiceIntegrationTests {
                 () -> jobService.getJob(99999));
     }
 
+    @Test
+    void updateJob_whenValidRequest_thenReturnUpdatedJob() {
+        Job job = createJob();
 
+        SaveJobRequest request = new SaveJobRequest();
+        request.setName(job.getName() + "updated");
+        request.setDescription(job.getDescription() + " updated");
+
+        Job updatedJob = jobService.updateJob(job.getId(), request);
+
+        assertThat(updatedJob, notNullValue());
+        assertThat(updatedJob.getId(), is(job.getId()));
+        assertThat(updatedJob.getName(), is(request.getName()));
+        assertThat(updatedJob.getDescription(), is(request.getDescription()));
+
+    }
+
+    @Test
+    void deleteJob_whenExistingJob_thenJobDoesNotExistAnymore() {
+        Job job = createJob();
+
+        jobService.deleteJob(job.getId());
+
+        Assertions.assertThrows(ResourceNotFoundException.class,
+                () -> jobService.getJob(job.getId()));
+    }
 
     private Job createJob() {
         SaveJobRequest request = new SaveJobRequest();
