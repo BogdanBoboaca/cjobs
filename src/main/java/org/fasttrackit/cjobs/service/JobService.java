@@ -3,7 +3,7 @@ package org.fasttrackit.cjobs.service;
 import org.fasttrackit.cjobs.domain.Job;
 import org.fasttrackit.cjobs.exception.ResourceNotFoundException;
 import org.fasttrackit.cjobs.persistance.JobRepository;
-import org.fasttrackit.cjobs.transfer.job.GetJobRequest;
+import org.fasttrackit.cjobs.transfer.job.GetJobsRequest;
 import org.fasttrackit.cjobs.transfer.job.SaveJobRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -44,7 +44,7 @@ public class JobService {
 
     }
 
-    public Page<Job> getJob(GetJobRequest request, Pageable pageable){
+    public Page<Job> getJobs(GetJobsRequest request, Pageable pageable){
         LOGGER.info("Search jobs: {}", request);
 
         if (request != null){

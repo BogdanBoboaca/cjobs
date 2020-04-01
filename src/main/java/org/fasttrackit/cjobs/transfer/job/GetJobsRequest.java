@@ -1,6 +1,6 @@
 package org.fasttrackit.cjobs.transfer.job;
 
-public class GetJobRequest {
+public class GetJobsRequest {
 
     private String partialName;
 

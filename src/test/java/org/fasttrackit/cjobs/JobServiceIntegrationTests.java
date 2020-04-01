@@ -61,6 +61,12 @@ public class JobServiceIntegrationTests {
                 () -> jobService.getJob(99999));
     }
 
+//    @Test
+//    void getJobsByPartialName_whenExistingJob_thenReturnJob() {
+//        Job partialNameJob = createJob();
+//        Job response = jobService.getJobs(partialNameJob.getId(),)
+//    }
+
     @Test
     void updateJob_whenValidRequest_thenReturnUpdatedJob() {
         Job job = createJob();
