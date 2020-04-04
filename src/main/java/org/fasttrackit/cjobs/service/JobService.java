@@ -67,7 +67,7 @@ public class JobService {
     }
 
     public void deleteJob(long id){
-        LOGGER.info("Deleting Job", id);
+        LOGGER.info("Deleting Job {}", id);
         jobRepository.deleteById(id);
     }
 

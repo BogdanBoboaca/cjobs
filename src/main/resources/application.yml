@@ -4,6 +4,6 @@ spring:
     hibernate.ddl-auto: update
     database-platform: org.hibernate.dialect.MySQL8Dialect
   datasource:
-    url: jdbc:mysql://localhost:3306/cjobs
+    url: jdbc:mysql://localhost:3306/cjobs?serverTimezone=UTC
     username: cjobs-admin
     password: cjobs-admin
