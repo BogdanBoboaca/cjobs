@@ -3,6 +3,7 @@ package org.fasttrackit.cjobs;
 import org.fasttrackit.cjobs.domain.Job;
 import org.fasttrackit.cjobs.exception.ResourceNotFoundException;
 import org.fasttrackit.cjobs.service.JobService;
+import org.fasttrackit.cjobs.steps.JobTestSteps;
 import org.fasttrackit.cjobs.transfer.job.SaveJobRequest;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -20,10 +21,12 @@ public class JobServiceIntegrationTests {
 
     @Autowired
     private JobService jobService;
+    @Autowired
+    private JobTestSteps jobTestSteps;
 
     @Test
     void createJob_whenValidRequest_thenJobIsCreated() {
-        createJob();
+        jobTestSteps.createJob();
     }
 
 
@@ -44,7 +47,7 @@ public class JobServiceIntegrationTests {
 
     @Test
     void getJob_whenExistingJob_thenReturnJob (){
-        Job job = createJob();
+        Job job = jobTestSteps.createJob();
 
         Job response = jobService.getJob(job.getId());
 
@@ -69,7 +72,7 @@ public class JobServiceIntegrationTests {
 
     @Test
     void updateJob_whenValidRequest_thenReturnUpdatedJob() {
-        Job job = createJob();
+        Job job = jobTestSteps.createJob();
 
         SaveJobRequest request = new SaveJobRequest();
         request.setName(job.getName() + "updated");
@@ -86,7 +89,7 @@ public class JobServiceIntegrationTests {
 
     @Test
     void deleteJob_whenExistingJob_thenJobDoesNotExistAnymore() {
-        Job job = createJob();
+        Job job = jobTestSteps.createJob();
 
         jobService.deleteJob(job.getId());
 
@@ -94,18 +97,5 @@ public class JobServiceIntegrationTests {
                 () -> jobService.getJob(job.getId()));
     }
 
-    private Job createJob() {
-        SaveJobRequest request = new SaveJobRequest();
-        request.setName("Java Developer");
-        request.setDescription("Analyze requirements, design solutions and develop software artefact's");
 
-        Job job = jobService.createJob(request);
-
-        assertThat(job, notNullValue());
-        assertThat(job.getId(), greaterThan(0L));
-        assertThat(job.getName(), is(request.getName()));
-        assertThat(job.getDescription(), is(request.getDescription()));
-
-        return job;
-    }
 }
