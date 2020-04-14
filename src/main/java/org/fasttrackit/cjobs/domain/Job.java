@@ -1,9 +1,7 @@
 package org.fasttrackit.cjobs.domain;
 
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
 @Entity
@@ -12,6 +10,8 @@ public class Job {
     @Id
     @GeneratedValue
     private long id;
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Requiter requiter;
     @NotNull
     private String name;
     @NotNull
@@ -24,6 +24,14 @@ public class Job {
 
     public void setId(long id) {
         this.id = id;
+    }
+
+    public Requiter getRequiter() {
+        return requiter;
+    }
+
+    public void setRequiter(Requiter requiter) {
+        this.requiter = requiter;
     }
 
     public String getName() {

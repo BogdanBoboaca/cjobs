@@ -1,6 +1,8 @@
 package org.fasttrackit.cjobs.domain;
 
 import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 public class Cv {
@@ -9,8 +11,8 @@ public class Cv {
     @GeneratedValue
     private long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    private Applicant applicant;
+    @OneToMany(fetch = FetchType.LAZY)
+    private Set <Applicant> applicant = new HashSet<>();
 
     public long getId() {
         return id;
@@ -20,11 +22,11 @@ public class Cv {
         this.id = id;
     }
 
-    public Applicant getApplicant() {
+    public Set <Applicant> getApplicant() {
         return applicant;
     }
 
-    public void setApplicant(Applicant applicant) {
+    public void setApplicant(Set<Applicant> applicant) {
         this.applicant = applicant;
     }
 }

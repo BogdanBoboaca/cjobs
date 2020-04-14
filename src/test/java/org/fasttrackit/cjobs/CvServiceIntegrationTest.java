@@ -16,6 +16,7 @@ public class CvServiceIntegrationTest {
     @Autowired
     private ApplicantTestSteps applicantTestSteps;
 
+
     @Test
     void addCvToApplicant_whenNewCv_thenCvIsCreated() {
         Applicant applicant = applicantTestSteps.createApplicant();

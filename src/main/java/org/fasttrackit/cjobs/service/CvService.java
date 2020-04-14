@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.Set;
 
 @Service
 public class CvService {
@@ -34,8 +35,10 @@ public class CvService {
         if (cv.getApplicant() == null) {
             Applicant applicant = applicantService.getApplicant(request.getApplicantID());
 
-            cv.setApplicant(applicant);
+            cv.setApplicant((Set<Applicant>) applicant);
         }
+
+
 
         cvRepository.save(cv);
 
