@@ -1,5 +1,6 @@
 package org.fasttrackit.cjobs.steps;
 
+import org.fasttrackit.cjobs.domain.Applicant;
 import org.fasttrackit.cjobs.service.CvService;
 import org.fasttrackit.cjobs.transfer.cv.CvResponse;
 import org.fasttrackit.cjobs.transfer.cv.SaveCvRequest;
@@ -17,12 +18,14 @@ public class CvTestSteps {
     @Autowired
     private CvService cvService;
 
-    public CvResponse createCv() {
+    public CvResponse createCv(Long id) {
+
         SaveCvRequest request = new SaveCvRequest();
         request.setAboutMe("A highly competent and enthusiastic university graduate ");
         request.setWorkExperience("Sales representative");
         request.setEducation("Bachelor's degree: BSc (Hons) Computer Science (Artificial Intelligence)");
         request.setSkills("Good understanding of Core Java");
+        request.setApplicantID(id);
 
         CvResponse cv = cvService.createCv(request);
 
@@ -34,5 +37,5 @@ public class CvTestSteps {
         assertThat(cv.getSkills(), is(request.getSkills()));
 
         return cv;
-}
+    }
 }

@@ -22,7 +22,7 @@ public class Applicant {
     @NotNull
     private String email;
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 

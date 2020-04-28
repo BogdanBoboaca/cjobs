@@ -10,8 +10,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import java.util.Collections;
-
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -30,17 +28,17 @@ public class CvServiceIntegrationTest {
     @Test
     void addCvToApplicant_whenNewCv_thenCvIsCreated() {
         Applicant applicant = applicantTestSteps.createApplicant();
-        CvResponse cv = cvTestSteps.createCv();
+        CvResponse cv = cvTestSteps.createCv(applicant.getId());
 
         AddCvsToApplicantRequest cvRequest = new AddCvsToApplicantRequest();
         cvRequest.setApplicantID(applicant.getId());
         cvRequest.setCvIds(cv.getId());
 
-         //cvService.addCvsToApplicant(cvRequest);
+         cvService.addCvsToApplicant(cvRequest);
     }
 
-    @Test
-    void createCv_whenValidRequest_thenCvIsCreated() {
-        cvTestSteps.createCv();
-   }
+//    @Test
+//    void createCv_whenValidRequest_thenCvIsCreated() {
+//        cvTestSteps.createCv(applicant.getId());
+//   }
 }

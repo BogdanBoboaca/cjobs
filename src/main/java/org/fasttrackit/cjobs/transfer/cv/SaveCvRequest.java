@@ -1,7 +1,5 @@
 package org.fasttrackit.cjobs.transfer.cv;
 
-import org.fasttrackit.cjobs.domain.Applicant;
-
 import javax.validation.constraints.NotNull;
 
 public class SaveCvRequest {

@@ -15,7 +15,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.Optional;
 
 @Service
 public class CvService {
@@ -49,7 +48,7 @@ public class CvService {
 
     }
 
-
+    @Transactional
     public CvResponse createCv (SaveCvRequest request){
         LOGGER.info("Creating CV {}", request);
 
@@ -63,16 +62,17 @@ public class CvService {
 
 
 //        cv.setApplicant(cv);
-//        cv.setAboutMe(request.getAboutMe());
-//        cv.setWorkExperience(request.getWorkExperience());
-//        cv.setEducation(request.getEducation());
-//        cv.setSkills(request.getSkills());
+        cv.setAboutMe(request.getAboutMe());
+        cv.setWorkExperience(request.getWorkExperience());
+        cv.setEducation(request.getEducation());
+        cv.setSkills(request.getSkills());
 
         Cv saveCv = cvRepository.save(cv);
 
         return mapCvResponse(saveCv);
     }
 
+    @Transactional
     public void getCv(long id){
         LOGGER.info("Retrieving CV {}", id);
 
