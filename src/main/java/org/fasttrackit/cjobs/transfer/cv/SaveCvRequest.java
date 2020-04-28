@@ -1,20 +1,12 @@
-package org.fasttrackit.cjobs.domain;
+package org.fasttrackit.cjobs.transfer.cv;
 
-import javax.persistence.*;
+import org.fasttrackit.cjobs.domain.Applicant;
+
 import javax.validation.constraints.NotNull;
-import java.util.HashSet;
-import java.util.Set;
 
-@Entity
-public class Cv {
+public class SaveCvRequest {
 
-    @Id
-    private long id;
-
-    @OneToOne(fetch = FetchType.LAZY)
-    @MapsId
-    private Applicant applicant;
-
+    private long applicantID;
     @NotNull
     private String aboutMe;
     @NotNull
@@ -24,16 +16,13 @@ public class Cv {
     @NotNull
     private String skills;
 
-    public long getId() {
-        return id;
+
+    public long getApplicantID() {
+        return applicantID;
     }
 
-    public void setId(long id) {
-        this.id = id;
-    }
-
-    public Applicant getApplicant() {
-        return applicant;
+    public void setApplicantID(long applicantID) {
+        this.applicantID = applicantID;
     }
 
     public String getAboutMe() {
@@ -68,16 +57,10 @@ public class Cv {
         this.skills = skills;
     }
 
-    public void setApplicant(Applicant applicant) {
-        this.applicant = applicant;
-    }
-
     @Override
     public String toString() {
-        return "Cv{" +
-                "id=" + id +
-                ", applicant=" + applicant +
-                ", aboutMe='" + aboutMe + '\'' +
+        return "SaveCvRequest{" +
+                "aboutMe='" + aboutMe + '\'' +
                 ", workExperience='" + workExperience + '\'' +
                 ", education='" + education + '\'' +
                 ", skills='" + skills + '\'' +

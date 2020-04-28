@@ -1,27 +1,11 @@
-package org.fasttrackit.cjobs.domain;
+package org.fasttrackit.cjobs.transfer.cv;
 
-import javax.persistence.*;
-import javax.validation.constraints.NotNull;
-import java.util.HashSet;
-import java.util.Set;
+public class CvResponse {
 
-@Entity
-public class Cv {
-
-    @Id
     private long id;
-
-    @OneToOne(fetch = FetchType.LAZY)
-    @MapsId
-    private Applicant applicant;
-
-    @NotNull
     private String aboutMe;
-    @NotNull
     private String workExperience;
-    @NotNull
     private String education;
-    @NotNull
     private String skills;
 
     public long getId() {
@@ -30,10 +14,6 @@ public class Cv {
 
     public void setId(long id) {
         this.id = id;
-    }
-
-    public Applicant getApplicant() {
-        return applicant;
     }
 
     public String getAboutMe() {
@@ -68,15 +48,10 @@ public class Cv {
         this.skills = skills;
     }
 
-    public void setApplicant(Applicant applicant) {
-        this.applicant = applicant;
-    }
-
     @Override
     public String toString() {
-        return "Cv{" +
+        return "CvResponse{" +
                 "id=" + id +
-                ", applicant=" + applicant +
                 ", aboutMe='" + aboutMe + '\'' +
                 ", workExperience='" + workExperience + '\'' +
                 ", education='" + education + '\'' +

@@ -19,11 +19,12 @@ public class ApplicantTestSteps {
     private ApplicantService applicantService;
 
     public Applicant createApplicant() {
+
         SaveApplicantRequest request = new SaveApplicantRequest();
-        request.setFirstName("FirstName");
-        request.setLastName("LastName");
-        request.setPhoneNumber(0732775504);
-        request.setEmail("Email");
+        request.setFirstName("Bogdan");
+        request.setLastName("Boboaca");
+        request.setPhoneNumber(732775504);
+        request.setEmail("bobo_mar@hotmail.co.uk");
 
         Applicant applicant = applicantService.createApplicant(request);
 
