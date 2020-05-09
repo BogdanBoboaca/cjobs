@@ -4,14 +4,20 @@ import org.fasttrackit.cjobs.domain.Job;
 import org.fasttrackit.cjobs.exception.ResourceNotFoundException;
 import org.fasttrackit.cjobs.persistance.JobRepository;
 import org.fasttrackit.cjobs.transfer.job.GetJobsRequest;
+import org.fasttrackit.cjobs.transfer.job.JobResponse;
 import org.fasttrackit.cjobs.transfer.job.SaveJobRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+
+import javax.transaction.Transactional;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class JobService {
@@ -27,43 +33,80 @@ public class JobService {
         this.jobRepository = jobRepository;
     }
 
-    public Job createJob(SaveJobRequest request){
+    @Transactional
+    public JobResponse createJob(SaveJobRequest request){
         LOGGER.info("Creating job {}", request);
         Job job = new Job();
         job.setName(request.getName());
         job.setDescription(request.getDescription());
 
-       return jobRepository.save(job);
+        Job savedJob = jobRepository.save(job);
+
+        return mapJobResponse(savedJob);
+
     }
 
-    public Job getJob(long id){
+    private JobResponse mapJobResponse(Job job1) {
+        JobResponse jobDto = new JobResponse();
+        jobDto.setId(job1.getId());
+        jobDto.setName(job1.getName());
+        jobDto.setDescription(job1.getDescription());
+        return jobDto;
+    }
+
+    @Transactional
+    public JobResponse getJob(long id){
         LOGGER.info("Retrieving job {}", id);
 
+        Job job = findJob(id);
+        return mapJobResponse(job);
+
+    }
+
+    public Job findJob(long id) {
         return jobRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Job " + id + " not found."));
-
     }
 
-    public Page<Job> getJobs(GetJobsRequest request, Pageable pageable){
-        LOGGER.info("Search jobs: {}", request);
+    @Transactional
+    public Page<JobResponse> getJobs(long jobId, Pageable pageable) {
+        LOGGER.info("Retrieving Jobs from Requiters {}", jobId);
 
-        if (request != null){
-            if(request.getPartialName() != null){
-                return jobRepository.findByNameContaining(request.getPartialName(),pageable);
-            }
+        Page<Job> jobsPage = jobRepository.findByRequiterId(jobId, pageable);
+
+        List<JobResponse> jobsDtos = new ArrayList<>();
+
+        for (Job jobs : jobsPage.getContent()) {
+            JobResponse dto = mapJobResponse(jobs);
+
+            jobsDtos.add(dto);
         }
 
-        return jobRepository.findAll(pageable);
+        return new PageImpl<>(jobsDtos, pageable, jobsPage.getTotalElements());
     }
 
-    public Job updateJob (long id, SaveJobRequest request){
+//    public Page<Job> getJobs(GetJobsRequest request, Pageable pageable){
+//        LOGGER.info("Search jobs: {}", request);
+//
+//        if (request != null){
+//            if(request.getPartialName() != null){
+//                return jobRepository.findByNameContaining(request.getPartialName(),pageable);
+//            }
+//        }
+//
+//        return jobRepository.findAll(pageable);
+//    }
+
+    @Transactional
+    public JobResponse updateJob (long id, SaveJobRequest request){
         LOGGER.info("Updating job {}: {}", id, request);
 
-        Job job = getJob(id);
+        Job job = findJob(id);
 
         BeanUtils.copyProperties(request, job);
 
-        return jobRepository.save(job);
+        Job savedJob = jobRepository.save(job);
+        return mapJobResponse(savedJob);
     }
 
     public void deleteJob(long id){

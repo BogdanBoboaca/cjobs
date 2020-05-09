@@ -60,8 +60,6 @@ public class CvService {
             cv.setApplicant(applicant);
         }
 
-
-//        cv.setApplicant(cv);
         cv.setAboutMe(request.getAboutMe());
         cv.setWorkExperience(request.getWorkExperience());
         cv.setEducation(request.getEducation());
@@ -73,24 +71,22 @@ public class CvService {
     }
 
     @Transactional
-    public void getCv(long id){
+    public CvResponse getCv(long id){
         LOGGER.info("Retrieving CV {}", id);
 
         Cv cv = cvRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("CV " + id + "does not exist"));
 
 
-    //    return mapCvResponse(cv);
+        return mapCvResponse(cv);
 
     }
-
 
     private Cv findCv(long id) {
         return cvRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("CV " + id + " not found."));
     }
-
-
+    
     private CvResponse mapCvResponse(Cv cv) {
         CvResponse cvDto = new CvResponse();
         cvDto.setId(cv.getId());

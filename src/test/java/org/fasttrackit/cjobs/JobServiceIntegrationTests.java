@@ -4,6 +4,7 @@ import org.fasttrackit.cjobs.domain.Job;
 import org.fasttrackit.cjobs.exception.ResourceNotFoundException;
 import org.fasttrackit.cjobs.service.JobService;
 import org.fasttrackit.cjobs.steps.JobTestSteps;
+import org.fasttrackit.cjobs.transfer.job.JobResponse;
 import org.fasttrackit.cjobs.transfer.job.SaveJobRequest;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -47,9 +48,9 @@ public class JobServiceIntegrationTests {
 
     @Test
     void getJob_whenExistingJob_thenReturnJob (){
-        Job job = jobTestSteps.createJob();
+        JobResponse job = jobTestSteps.createJob();
 
-        Job response = jobService.getJob(job.getId());
+        JobResponse response = jobService.getJob(job.getId());
 
         assertThat(response, notNullValue());
         assertThat(response.getId(), is(job.getId()));
@@ -72,13 +73,13 @@ public class JobServiceIntegrationTests {
 
     @Test
     void updateJob_whenValidRequest_thenReturnUpdatedJob() {
-        Job job = jobTestSteps.createJob();
+        JobResponse job = jobTestSteps.createJob();
 
         SaveJobRequest request = new SaveJobRequest();
         request.setName(job.getName() + "updated");
         request.setDescription(job.getDescription() + " updated");
 
-        Job updatedJob = jobService.updateJob(job.getId(), request);
+        JobResponse updatedJob = jobService.updateJob(job.getId(), request);
 
         assertThat(updatedJob, notNullValue());
         assertThat(updatedJob.getId(), is(job.getId()));
@@ -89,7 +90,7 @@ public class JobServiceIntegrationTests {
 
     @Test
     void deleteJob_whenExistingJob_thenJobDoesNotExistAnymore() {
-        Job job = jobTestSteps.createJob();
+        JobResponse job = jobTestSteps.createJob();
 
         jobService.deleteJob(job.getId());
 

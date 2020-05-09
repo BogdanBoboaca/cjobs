@@ -27,29 +27,29 @@ public class JobController {
     }
 
     @PostMapping
-    public ResponseEntity<Job> createJob(@Valid @RequestBody SaveJobRequest request) {
-        Job job = jobService.createJob(request);
+    public ResponseEntity<JobResponse> createJob(@Valid @RequestBody SaveJobRequest request) {
+        JobResponse job = jobService.createJob(request);
 
         return new ResponseEntity<>(job, HttpStatus.CREATED);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Job> getJob(@PathVariable long id) {
-        Job job = jobService.getJob(id);
+    public ResponseEntity<JobResponse> getJob(@PathVariable long id) {
+        JobResponse job = jobService.getJob(id);
 
         return new ResponseEntity<>(job, HttpStatus.OK);
     }
 
     @GetMapping
-    public ResponseEntity<Page<Job>> getJobs(GetJobsRequest request, Pageable pageable) {
-        Page<Job> jobs = jobService.getJobs(request, pageable);
+    public ResponseEntity<Page<JobResponse>> getJobs(long id, Pageable pageable) {
+        Page<JobResponse> jobs = jobService.getJobs(id, pageable);
 
         return new ResponseEntity<>(jobs, HttpStatus.OK);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Job> updateJob(@PathVariable long id, @Valid @RequestBody SaveJobRequest request) {
-        Job job = jobService.updateJob(id, request);
+    public ResponseEntity<JobResponse> updateJob(@PathVariable long id, @Valid @RequestBody SaveJobRequest request) {
+        JobResponse job = jobService.updateJob(id, request);
 
         return new ResponseEntity<>(job, HttpStatus.OK);
     }

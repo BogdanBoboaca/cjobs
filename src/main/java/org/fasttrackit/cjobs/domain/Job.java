@@ -11,6 +11,7 @@ public class Job {
     @GeneratedValue
     private long id;
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "requiter_id")
     private Requiter requiter;
     @NotNull
     private String name;
@@ -24,14 +25,6 @@ public class Job {
 
     public void setId(long id) {
         this.id = id;
-    }
-
-    public Requiter getRequiter() {
-        return requiter;
-    }
-
-    public void setRequiter(Requiter requiter) {
-        this.requiter = requiter;
     }
 
     public String getName() {

@@ -2,6 +2,7 @@ package org.fasttrackit.cjobs.steps;
 
 import org.fasttrackit.cjobs.domain.Job;
 import org.fasttrackit.cjobs.service.JobService;
+import org.fasttrackit.cjobs.transfer.job.JobResponse;
 import org.fasttrackit.cjobs.transfer.job.SaveJobRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -17,12 +18,12 @@ public class JobTestSteps {
     @Autowired
     private JobService jobService;
 
-    public Job createJob() {
+    public JobResponse createJob() {
         SaveJobRequest request = new SaveJobRequest();
         request.setName("Java Developer");
         request.setDescription("Analyze requirements, design solutions and develop software artefact's");
 
-        Job job = jobService.createJob(request);
+        JobResponse job = jobService.createJob(request);
 
         assertThat(job, notNullValue());
         assertThat(job.getId(), greaterThan(0L));
