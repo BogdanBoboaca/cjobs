@@ -82,4 +82,19 @@ public class Requiter {
                 ", address='" + address + '\'' +
                 '}';
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Requiter requiter = (Requiter) o;
+
+        return id == requiter.id;
+    }
+
+    @Override
+    public int hashCode() {
+        return (int) (id ^ (id >>> 32));
+    }
 }
