@@ -5,7 +5,7 @@ import java.util.List;
 public class AddCvsToApplicantRequest {
 
     private long applicantID;
-    private long cvId;
+    private List<Long> cvIds;
 
     public long getApplicantID() {
         return applicantID;
@@ -15,19 +15,27 @@ public class AddCvsToApplicantRequest {
         this.applicantID = applicantID;
     }
 
-    public Long getCvId() {
-        return cvId;
+    public List<Long> getCvIds() {
+        return cvIds;
     }
 
-    public void setCvIds(Long cvId) {
-        this.cvId = cvId;
+    public void setCvIds(List<Long> cvId) {
+        this.cvIds = cvId;
     }
+
+    //    public Long getCvId() {
+//        return cvId;
+//    }
+//
+//    public void setCvIds(Long cvId) {
+//        this.cvId = cvId;
+//    }
 
     @Override
     public String toString() {
         return "AddCvToApplicant{" +
                 "applicantID=" + applicantID +
-                ", cvIds=" + cvId +
+                ", cvIds=" + cvIds +
                 '}';
     }
 }

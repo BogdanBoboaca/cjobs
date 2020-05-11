@@ -23,13 +23,13 @@ public class CvService {
 
     private final CvRepository cvRepository;
     private final ApplicantService applicantService;
-    private final ApplicantRepository applicantRepository;
+//    private final ApplicantRepository applicantRepository;
 
     @Autowired
-    public CvService(CvRepository cvRepository, ApplicantService applicantService, ApplicantRepository applicantRepository) {
+    public CvService(CvRepository cvRepository, ApplicantService applicantService) {
         this.cvRepository = cvRepository;
         this.applicantService = applicantService;
-        this.applicantRepository = applicantRepository;
+//        this.applicantRepository = applicantRepository;
     }
 
     @Transactional
@@ -43,6 +43,11 @@ public class CvService {
 
             cv.setApplicant(applicant);
         }
+
+//        for (Long id : request.getCvIds()) {
+//            Applicant applicant = applicantService.getApplicant(id);
+//            cv.setApplicant(applicant);
+//        }
 
         cvRepository.save(cv);
 
@@ -82,23 +87,6 @@ public class CvService {
 
     }
 
-    private Cv findCv(long id) {
-        return cvRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("CV " + id + " not found."));
-    }
-    
-    private CvResponse mapCvResponse(Cv cv) {
-        CvResponse cvDto = new CvResponse();
-        cvDto.setId(cv.getId());
-        cvDto.setAboutMe(cv.getAboutMe());
-        cvDto.setWorkExperience(cv.getWorkExperience());
-        cvDto.setEducation(cv.getEducation());
-        cvDto.setSkills(cv.getSkills());
-
-        return cvDto;
-    }
-
-
     public CvResponse updateCv (long id, SaveCvRequest request){
         LOGGER.info("Updating CV {}: {}", id, request);
 
@@ -115,5 +103,21 @@ public class CvService {
     public void deleteCv(long id){
         LOGGER.info("Deleting CV {}", id);
         cvRepository.deleteById(id);
+    }
+
+    public Cv findCv(long id) {
+        return cvRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("CV " + id + " not found."));
+    }
+
+    private CvResponse mapCvResponse(Cv cv) {
+        CvResponse cvDto = new CvResponse();
+        cvDto.setId(cv.getId());
+        cvDto.setAboutMe(cv.getAboutMe());
+        cvDto.setWorkExperience(cv.getWorkExperience());
+        cvDto.setEducation(cv.getEducation());
+        cvDto.setSkills(cv.getSkills());
+
+        return cvDto;
     }
 }
