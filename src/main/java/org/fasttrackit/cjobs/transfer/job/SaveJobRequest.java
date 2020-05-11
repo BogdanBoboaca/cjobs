@@ -4,10 +4,19 @@ import javax.validation.constraints.NotNull;
 
 public class SaveJobRequest {
 
+    private long requiterId;
     @NotNull
     private String name;
     @NotNull
     private String description;
+
+    public long getRequiterId() {
+        return requiterId;
+    }
+
+    public void setRequiterId(long requiterId) {
+        this.requiterId = requiterId;
+    }
 
     public String getName() {
         return name;

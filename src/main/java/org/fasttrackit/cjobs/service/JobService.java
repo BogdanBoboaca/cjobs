@@ -1,8 +1,11 @@
 package org.fasttrackit.cjobs.service;
 
+import org.fasttrackit.cjobs.domain.Cv;
 import org.fasttrackit.cjobs.domain.Job;
+import org.fasttrackit.cjobs.domain.Requiter;
 import org.fasttrackit.cjobs.exception.ResourceNotFoundException;
 import org.fasttrackit.cjobs.persistance.JobRepository;
+import org.fasttrackit.cjobs.transfer.job.AddJobToRequiterRequest;
 import org.fasttrackit.cjobs.transfer.job.GetJobsRequest;
 import org.fasttrackit.cjobs.transfer.job.JobResponse;
 import org.fasttrackit.cjobs.transfer.job.SaveJobRequest;
@@ -15,6 +18,7 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import javax.swing.*;
 import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
@@ -26,11 +30,13 @@ public class JobService {
 
     //Inversion of control (IoC)
     private final JobRepository jobRepository;
+    private final RequiterService requiterService;
 
     //Dependency Injection (from IoC Container)
     @Autowired
-    public JobService(JobRepository jobRepository) {
+    public JobService(JobRepository jobRepository, RequiterService requiterService) {
         this.jobRepository = jobRepository;
+        this.requiterService = requiterService;
     }
 
     @Transactional
@@ -43,6 +49,47 @@ public class JobService {
         Job savedJob = jobRepository.save(job);
 
         return mapJobResponse(savedJob);
+
+//        Job job = jobRepository.findById(request.getRequiterId())
+//                .orElse(new Job());
+//
+//        if (job.getRequiter() == null) {
+//            Requiter requiter = requiterService.getRequiter(request.getRequiterId());
+//            job.setRequiter(requiter);
+//        }
+//
+//        job.setName(request.getName());
+//        job.setDescription(request.getDescription());
+//
+//        for (Long id : jobToRequiterRequest.getJobIds()) {
+//           Requiter requiter = requiterService.getRequiter(id);
+//           job.setRequiter(requiter);
+//       }
+//
+//        Job saveJob = jobRepository.save(job);
+//
+//        return mapJobResponse(saveJob);
+
+    }
+
+    @Transactional
+    public void addJobToRequiter(AddJobToRequiterRequest request) {
+        LOGGER.info("Adding Jobs to Requiter: {}", request);
+
+        Job job = jobRepository.findById(request.getRequiterId())
+                .orElse(new Job());
+
+        if (job.getRequiter() == null) {
+            Requiter requiter = requiterService.getRequiter(request.getRequiterId());
+            job.setRequiter(requiter);
+        }
+
+        for (Long id : request.getJobIds()) {
+            Requiter requiter = requiterService.getRequiter(id);
+            job.setRequiter(requiter);
+        }
+
+        jobRepository.save(job);
 
     }
 
@@ -69,33 +116,31 @@ public class JobService {
     }
 
     @Transactional
-    public Page<JobResponse> getJobs(long jobId, Pageable pageable) {
-        LOGGER.info("Retrieving Jobs from Requiters {}", jobId);
+    public Page<JobResponse> getJobs(GetJobsRequest request, Pageable pageable){
+        LOGGER.info("Search jobs: {}", request);
 
-        Page<Job> jobsPage = jobRepository.findByRequiterId(jobId, pageable);
+        Page<Job> jobsPage;
 
-        List<JobResponse> jobsDtos = new ArrayList<>();
-
-        for (Job jobs : jobsPage.getContent()) {
-            JobResponse dto = mapJobResponse(jobs);
-
-            jobsDtos.add(dto);
+        if (request != null){
+            if(request.getPartialName() != null){
+                jobsPage = jobRepository.findByNameContaining(request.getPartialName(),pageable);
+            }else {
+                jobsPage = jobRepository.findAll(pageable);
+            }
+        }else {
+            jobsPage = jobRepository.findAll(pageable);
         }
 
-        return new PageImpl<>(jobsDtos, pageable, jobsPage.getTotalElements());
-    }
+        List<JobResponse> jobDtos = new ArrayList<>();
 
-//    public Page<Job> getJobs(GetJobsRequest request, Pageable pageable){
-//        LOGGER.info("Search jobs: {}", request);
-//
-//        if (request != null){
-//            if(request.getPartialName() != null){
-//                return jobRepository.findByNameContaining(request.getPartialName(),pageable);
-//            }
-//        }
-//
-//        return jobRepository.findAll(pageable);
-//    }
+        for (Job job : jobsPage.getContent()) {
+            JobResponse jobDto = mapJobResponse(job);
+
+            jobDtos.add(jobDto);
+        }
+        return new PageImpl<>(jobDtos, pageable, jobsPage.getTotalElements());
+
+    }
 
     @Transactional
     public JobResponse updateJob (long id, SaveJobRequest request){

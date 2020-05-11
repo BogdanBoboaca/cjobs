@@ -2,6 +2,7 @@ package org.fasttrackit.cjobs.web;
 
 import org.fasttrackit.cjobs.domain.Job;
 import org.fasttrackit.cjobs.service.JobService;
+import org.fasttrackit.cjobs.transfer.job.AddJobToRequiterRequest;
 import org.fasttrackit.cjobs.transfer.job.GetJobsRequest;
 import org.fasttrackit.cjobs.transfer.job.JobResponse;
 import org.fasttrackit.cjobs.transfer.job.SaveJobRequest;
@@ -33,6 +34,12 @@ public class JobController {
         return new ResponseEntity<>(job, HttpStatus.CREATED);
     }
 
+    @PutMapping
+    public ResponseEntity<JobResponse> addJobToRequiter(@Valid @RequestBody AddJobToRequiterRequest request) {
+        jobService.addJobToRequiter(request);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
     @GetMapping("/{id}")
     public ResponseEntity<JobResponse> getJob(@PathVariable long id) {
         JobResponse job = jobService.getJob(id);
@@ -41,7 +48,7 @@ public class JobController {
     }
 
     @GetMapping
-    public ResponseEntity<Page<JobResponse>> getJobs(long id, Pageable pageable) {
+    public ResponseEntity<Page<JobResponse>> getJobs(GetJobsRequest id, Pageable pageable) {
         Page<JobResponse> jobs = jobService.getJobs(id, pageable);
 
         return new ResponseEntity<>(jobs, HttpStatus.OK);

@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.fasttrackit.cjobs.domain.Applicant;
 import org.fasttrackit.cjobs.exception.ResourceNotFoundException;
 import org.fasttrackit.cjobs.persistance.ApplicantRepository;
+import org.fasttrackit.cjobs.transfer.applicant.ApplicantResponse;
 import org.fasttrackit.cjobs.transfer.applicant.SaveApplicantRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

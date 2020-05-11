@@ -27,6 +27,14 @@ public class Job {
         this.id = id;
     }
 
+    public Requiter getRequiter() {
+        return requiter;
+    }
+
+    public void setRequiter(Requiter requiter) {
+        this.requiter = requiter;
+    }
+
     public String getName() {
         return name;
     }
